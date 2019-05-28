@@ -50,7 +50,8 @@ if ($stmt = $conn->query("SHOW TABLES LIKE 'country' ")) {
             name     VARCHAR (255)        DEFAULT NULL
         );
 EOSQL;
-        if ($conn->query($sql) === TRUE) {
+        $query = $conn->query($sql);
+        if ($query) {
             echo "New table created successfully";
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
@@ -92,8 +93,8 @@ EOSQL;
             'United States');
         foreach ($countries as $curcountry) {
             $sql = "INSERT INTO country VALUES (DEFAULT, '$curcountry')";
-
-            if ($conn->query($sql) === TRUE) {
+            $query = $conn->query($sql);
+            if ($query) {
                 echo "New record created successfully";
             } else {
                 echo "Error: " . $sql . "<br>" . $conn->error;
