@@ -43,14 +43,18 @@ try {
 
 //Check if the table country exist, if not create it
 if ($stmt = $conn->query("SHOW TABLES LIKE 'country' ")) {
-    if ($stmt->num_rows < 1) {
+    if ($stmt->rowCount() == 0) {
         $sql = <<<EOSQL
         CREATE TABLE IF NOT EXISTS country (
             task_id     INT AUTO_INCREMENT PRIMARY KEY,
             name     VARCHAR (255)        DEFAULT NULL
         );
 EOSQL;
-        $this->pdo->exec($sql);
+        if ($conn->query($sql) === TRUE) {
+            echo "New table created successfully";
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
         $countries = array(
             'Argentina',
             'Australia',
