@@ -8,23 +8,23 @@ require __DIR__ . '/vendor/aws/aws-autoloader.php';
 use Aws\Ssm\SsmClient;
 $client = new SsmClient([
     'version' => 'latest',
-    'region' => 'eu-west-01',
+    'region' => 'eu-west-1',
 ]);
 
 $servernameRaw = $client->getParameters([
-    'Names' => ['NOOUL_ENDPOINT'],
+    'Names' => ['SSM_DB_ENDPOINT'],
     'WithDecryption' => true
 ]);
 $usernameRaw = $client->getParameters([
-    'Names' => ['NOOUL_USERNAME'],
+    'Names' => ['SSM_DB_USERNAME'],
     'WithDecryption' => true
 ]);
 $passwordRaw = $client->getParameters([
-    'Names' => ['NOOUL_PASSWORD'],
+    'Names' => ['SSM_DB_PASSWORD'],
     'WithDecryption' => true
 ]);
 $databaseRaw = $client->getParameters([
-    'Names' => ['NOOUL_DATABASE'],
+    'Names' => ['SSM_DB_DATABASE'],
     'WithDecryption' => true
 ]);
 
@@ -40,12 +40,16 @@ try {
     echo "Connection failed: " . $e->getMessage();
 }
 
-$sql = "SELECT name FROM country";
+
+$sql = "SELECT name FROM country ORDER BY RAND() LIMIT 1";
 $result = $conn->query($sql);
 
-while ($row = $result->fetch(PDO::FETCH_UNIQUE)) {
-    $country = $row[0];
+while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+    $country = $row['name'];
 }
+
+$instance_id = file_get_contents("http://instance-data/latest/meta-data/instance-id");
+
 ?>
 
 <head>
@@ -109,7 +113,7 @@ while ($row = $result->fetch(PDO::FETCH_UNIQUE)) {
     <div class="container text-center my-auto">
         <h1 class="mb-1">Welcome <?php echo $country; ?> !</h1>
         <h3 class="mb-5">
-            <em>This is server #<span id="serverId">1</span> managed by <span id="administrator">Nomane</span></em>
+            <em>This is server #<?php echo $instance_id; ?> managed by <span id="administrator">Nomane</span></em>
         </h3>
         <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">M2C Offers</a>
     </div>
