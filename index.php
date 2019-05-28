@@ -91,7 +91,7 @@ EOSQL;
             'United Kingdom',
             'United States');
         foreach ($countries as $curcountry) {
-            $sql = "INSERT INTO country VALUES (DEFAULT, $curcountry)";
+            $sql = "INSERT INTO country VALUES (DEFAULT, '$curcountry')";
 
             if ($conn->query($sql) === TRUE) {
                 echo "New record created successfully";

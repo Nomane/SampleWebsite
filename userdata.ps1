@@ -16,3 +16,20 @@ $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";"
 $instanceid=(curl http://169.254.169.254/latest/meta-data/instance-id -usebasicparsing).Content
 aws ec2 create-tags --region eu-west-1 --resources $instanceid --tags Key=output,Value=Success
 </powershell>
+
+
+
+
+
+
+cd "c:\temp\web"
+git pull origin master
+Copy-Item "c:\temp\web\*" -Destination "C:\inetpub\wwwroot" -Recurse -force
+(Get-Content c:\inetpub\wwwroot\index.php).replace('SSM_', 'NOOUL_') | Set-Content c:\inetpub\wwwroot\index.php
+
+
+
+Get-Content C:\Windows\temp\PHP56_errors.log
+
+
+mysql -h nooul-db-instance.cn0niypbubsa.eu-west-1.rds.amazonaws.com -u NOOUL_USER -pazertyuiop NOOULDATABSE
