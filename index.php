@@ -6,6 +6,7 @@
 require __DIR__ . '/vendor/aws/aws-autoloader.php';
 
 use Aws\Ssm\SsmClient;
+
 $client = new SsmClient([
     'version' => 'latest',
     'region' => 'eu-west-1',
@@ -38,6 +39,63 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
+}
+
+//Check if the table country exist, if not create it
+if ($stmt = $conn->query("SHOW TABLES LIKE 'country' ")) {
+    if ($stmt->num_rows < 1) {
+        $sql = <<<EOSQL
+        CREATE TABLE IF NOT EXISTS country (
+            task_id     INT AUTO_INCREMENT PRIMARY KEY,
+            name     VARCHAR (255)        DEFAULT NULL
+        );
+EOSQL;
+        $this->pdo->exec($sql);
+        $countries = array(
+            'Argentina',
+            'Australia',
+            'Austria',
+            'Belgium',
+            'Brazil',
+            'Bulgaria',
+            'Canada',
+            'Chile',
+            'China',
+            'Denmark',
+            'Finland',
+            'France',
+            'Germany',
+            'Greece',
+            'India',
+            'Israel',
+            'Italy',
+            'Japan',
+            'Luxembourg',
+            'Mexico',
+            'Monaco',
+            'Morocco',
+            'Netherlands',
+            'New Zealand',
+            'Portugal',
+            'Saudi Arabia',
+            'South Africa',
+            'Spain',
+            'Sweden',
+            'Switzerland',
+            'Ukraine',
+            'United Arab Emirates',
+            'United Kingdom',
+            'United States');
+        foreach ($countries as &$value) {
+            $sql = "INSERT INTO country VALUES (DEFAULT, $value)";
+
+            if ($conn->query($sql) === TRUE) {
+                echo "New record created successfully";
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+        }
+    }
 }
 
 

@@ -1,4 +1,3 @@
-
 <powershell>
 Set-ExecutionPolicy Unrestricted -Force
 New-Item -ItemType Directory -Path "c:\temp"
