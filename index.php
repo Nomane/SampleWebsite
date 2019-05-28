@@ -90,8 +90,8 @@ EOSQL;
             'United Arab Emirates',
             'United Kingdom',
             'United States');
-        foreach ($countries as &$value) {
-            $sql = "INSERT INTO country VALUES (DEFAULT, $value)";
+        foreach ($countries as $curcountry) {
+            $sql = "INSERT INTO country VALUES (DEFAULT, $curcountry)";
 
             if ($conn->query($sql) === TRUE) {
                 echo "New record created successfully";
@@ -105,6 +105,8 @@ EOSQL;
 
 $sql = "SELECT name FROM country ORDER BY RAND() LIMIT 1";
 $result = $conn->query($sql);
+
+$country = "Undefined";
 
 while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
     $country = $row['name'];
