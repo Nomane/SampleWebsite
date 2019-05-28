@@ -51,11 +51,6 @@ if ($stmt = $conn->query("SHOW TABLES LIKE 'country' ")) {
         );
 EOSQL;
         $query = $conn->query($sql);
-        if ($query) {
-            echo "New table created successfully";
-        } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
-        }
         $countries = array(
             'Argentina',
             'Australia',
@@ -94,15 +89,9 @@ EOSQL;
         foreach ($countries as $curcountry) {
             $sql = "INSERT INTO country VALUES (DEFAULT, '$curcountry')";
             $query = $conn->query($sql);
-            if ($query) {
-                echo "New record created successfully";
-            } else {
-                echo "Error: " . $sql . "<br>" . $conn->error;
-            }
         }
     }
 }
-
 
 $sql = "SELECT name FROM country ORDER BY RAND() LIMIT 1";
 $result = $conn->query($sql);
